@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { FileText, Trash2, UserRound } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import type { Notification } from "../types/notifications";
 import { formatTime } from "../utils/formatTime";
 
@@ -63,27 +64,47 @@ const notificationMessage = (notification: Notification): ReactNode => {
   }
 };
 
-const NotificationIcon = ({ type }: { type: Notification["type"] }) => {
+const NotificationIcon = ({
+  type,
+  shouldReduceMotion,
+}: {
+  type: Notification["type"];
+  shouldReduceMotion: boolean | null;
+}) => {
+  const hoverAnimation = shouldReduceMotion ? undefined : { scale: 1.04 };
+
   if (type === "team") {
     return (
-      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-notification-team text-white shadow-sm">
+      <motion.span
+        variants={{ rest: { scale: 1 }, hover: hoverAnimation }}
+        transition={{ duration: 0.16, ease: "easeOut" }}
+        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-notification-team text-white shadow-sm"
+      >
         <UserRound aria-hidden="true" className="h-7 w-7" strokeWidth={2} />
-      </span>
+      </motion.span>
     );
   }
 
   if (type === "review_cancelled") {
     return (
-      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-notification-cancelled text-white shadow-sm">
+      <motion.span
+        variants={{ rest: { scale: 1 }, hover: hoverAnimation }}
+        transition={{ duration: 0.16, ease: "easeOut" }}
+        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-notification-cancelled text-white shadow-sm"
+      >
         <Trash2 aria-hidden="true" className="h-6 w-6" strokeWidth={2} />
-      </span>
+      </motion.span>
     );
   }
 
   return (
-    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-notification-team text-white shadow-sm">
+    <motion.span
+      variants={{ rest: { scale: 1 }, hover: hoverAnimation }}
+      transition={{ duration: 0.16, ease: "easeOut" }}
+      className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-notification-team text-white shadow-sm"
+    >
       <FileText aria-hidden="true" className="h-6 w-6" strokeWidth={2} />
-    </span>
+    </motion.span>
   );
 };
 
@@ -93,10 +114,11 @@ export const NotificationItem = ({
 }: NotificationItemProps) => {
   const accessibleNotificationText = notificationText(notification);
   const displayTime = formatTime(notification.createdAt);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <div role="listitem" className="m-4">
-      <button
+      <motion.button
         type="button"
         aria-label={
           notification.read
@@ -104,12 +126,23 @@ export const NotificationItem = ({
             : `Mark notification as read: ${accessibleNotificationText} ${displayTime}`
         }
         onClick={() => onMarkAsRead(notification.id)}
+        initial="rest"
+        whileHover="hover"
+        whileFocus="hover"
+        variants={{
+          rest: { y: 0 },
+          hover: shouldReduceMotion ? { y: 0 } : { y: -2 },
+        }}
+        transition={{ duration: 0.16, ease: "easeOut" }}
         className={[
           "grid min-h-32 cursor-pointer w-full grid-cols-[auto_1fr_auto] items-start gap-4 px-4 py-5 text-left hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-blue-500 sm:px-6",
           notification.read ? "bg-white" : "bg-slate-100",
         ].join(" ")}
       >
-        <NotificationIcon type={notification.type} />
+        <NotificationIcon
+          type={notification.type}
+          shouldReduceMotion={shouldReduceMotion}
+        />
 
         <span className="min-w-0 pt-1">
           <span className="block text-sm leading-6 text-slate-700 sm:text-base">
@@ -122,13 +155,20 @@ export const NotificationItem = ({
 
         <span className="flex h-12 w-4 items-start justify-center pt-2">
           {!notification.read && (
-            <span
+            <motion.span
               aria-hidden="true"
+              variants={{
+                rest: { scale: 1, opacity: 1 },
+                hover: shouldReduceMotion
+                  ? { scale: 1, opacity: 1 }
+                  : { scale: 1.08, opacity: 1 },
+              }}
+              transition={{ duration: 0.16, ease: "easeOut" }}
               className="h-4 w-4 rounded-full bg-blue-500 shadow-sm"
             />
           )}
         </span>
-      </button>
+      </motion.button>
     </div>
   );
 };

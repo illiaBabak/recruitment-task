@@ -1,4 +1,5 @@
 import ClickAwayListener from "react-click-away-listener";
+import { AnimatePresence } from "motion/react";
 import { useNotifications } from "../hooks/useNotifications";
 import { NotificationBell } from "./NotificationBell";
 import { NotificationDropdown } from "./NotificationDropdown";
@@ -45,16 +46,18 @@ export const NotificationsMenu = () => {
           onClick={() => setIsNotificationsOpen((isOpen) => !isOpen)}
         />
 
-        {isNotificationsOpen && (
-          <NotificationDropdown
-            id={notificationsDropdownId}
-            notifications={notifications}
-            unreadNotifications={unreadNotifications}
-            unreadCount={unreadCount}
-            onMarkAsRead={markNotificationAsRead}
-            onMarkAllAsRead={markAllNotificationsAsRead}
-          />
-        )}
+        <AnimatePresence>
+          {isNotificationsOpen && (
+            <NotificationDropdown
+              id={notificationsDropdownId}
+              notifications={notifications}
+              unreadNotifications={unreadNotifications}
+              unreadCount={unreadCount}
+              onMarkAsRead={markNotificationAsRead}
+              onMarkAllAsRead={markAllNotificationsAsRead}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </ClickAwayListener>
   );

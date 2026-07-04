@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CheckCheck, Settings } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import type { Notification } from "../types/notifications";
 import { NotificationItem } from "./NotificationItem";
 
@@ -23,15 +24,26 @@ export const NotificationDropdown = ({
   onMarkAllAsRead,
 }: NotificationDropdownProps) => {
   const [activeTab, setActiveTab] = useState<NotificationTab>("all");
+  const shouldReduceMotion = useReducedMotion();
 
   const displayedNotifications =
     activeTab === "all" ? notifications : unreadNotifications;
 
   return (
-    <section
+    <motion.section
       id={id}
       role="dialog"
       aria-label="Notifications"
+      initial={
+        shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }
+      }
+      animate={
+        shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }
+      }
+      exit={
+        shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }
+      }
+      transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
       className="absolute right-0 top-16 z-50 flex max-h-[min(80vh,44rem)] w-[calc(100vw-2rem)] max-w-[46rem] flex-col overflow-hidden rounded-lg border border-slate-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.18)] sm:w-[min(calc(100vw-3rem),46rem)]"
     >
       <div className="shrink-0 px-4 pb-4 pt-5 sm:px-6">
@@ -46,10 +58,15 @@ export const NotificationDropdown = ({
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-2 sm:mt-8 sm:gap-3">
-          <button
+          <motion.button
+            layout
             type="button"
             aria-pressed={activeTab === "all"}
             onClick={() => setActiveTab("all")}
+            whileHover={shouldReduceMotion ? undefined : { y: -1 }}
+            whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+            animate={{ scale: activeTab === "all" ? 1 : 0.99 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
             className={[
               "flex-1 cursor-pointer whitespace-nowrap rounded border border-[1.5px] px-3 py-2.5 text-sm font-semibold text-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 sm:flex-none sm:px-4 sm:py-3 sm:text-base",
               activeTab === "all"
@@ -58,12 +75,17 @@ export const NotificationDropdown = ({
             ].join(" ")}
           >
             All Notifications
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            layout
             type="button"
             aria-pressed={activeTab === "unread"}
             onClick={() => setActiveTab("unread")}
+            whileHover={shouldReduceMotion ? undefined : { y: -1 }}
+            whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+            animate={{ scale: activeTab === "unread" ? 1 : 0.99 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
             className={[
               "flex-1 cursor-pointer whitespace-nowrap rounded border border-[1.5px] px-3 py-2.5 text-sm font-semibold text-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 sm:flex-none sm:px-4 sm:py-3 sm:text-base",
               activeTab === "unread"
@@ -72,29 +94,49 @@ export const NotificationDropdown = ({
             ].join(" ")}
           >
             Unread Notifications
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
             onClick={onMarkAllAsRead}
             disabled={unreadCount === 0}
+            whileHover={
+              !shouldReduceMotion && unreadCount > 0 ? { y: -1 } : undefined
+            }
+            whileTap={
+              !shouldReduceMotion && unreadCount > 0 ? { scale: 0.98 } : undefined
+            }
+            transition={{ duration: 0.15, ease: "easeOut" }}
             className="inline-flex cursor-pointer items-center gap-2 rounded px-2 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-50 disabled:cursor-not-allowed disabled:text-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 sm:ml-auto"
           >
-            <CheckCheck
+            <motion.span
               aria-hidden="true"
-              className="h-5 w-5"
-              strokeWidth={2}
-            />
+              whileHover={
+                !shouldReduceMotion && unreadCount > 0 ? { scale: 1.06 } : undefined
+              }
+              transition={{ duration: 0.15, ease: "easeOut" }}
+            >
+              <CheckCheck className="h-5 w-5" strokeWidth={2} />
+            </motion.span>
             Mark all as read
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
             aria-label="Notification settings"
+            whileHover={shouldReduceMotion ? undefined : { y: -1 }}
+            whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
             className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
           >
-            <Settings aria-hidden="true" className="h-6 w-6" strokeWidth={2} />
-          </button>
+            <motion.span
+              aria-hidden="true"
+              whileHover={shouldReduceMotion ? undefined : { rotate: 10 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+            >
+              <Settings className="h-6 w-6" strokeWidth={2} />
+            </motion.span>
+          </motion.button>
         </div>
       </div>
 
@@ -123,6 +165,6 @@ export const NotificationDropdown = ({
           </div>
         )}
       </div>
-    </section>
+    </motion.section>
   );
 };
