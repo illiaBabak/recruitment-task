@@ -1,0 +1,65 @@
+import type { Notification } from "../types/notifications";
+
+export const initialNotifications: Notification[] = [
+  {
+    id: "1",
+    type: "team",
+    userName: "Carol Jar",
+    createdAt: "2026-07-03T19:05:00.000Z",
+    read: false,
+  },
+  {
+    id: "2",
+    type: "team",
+    userName: "Simona Winch",
+    createdAt: "2026-07-03T14:00:00.000Z",
+    read: false,
+  },
+  {
+    id: "3",
+    type: "review_cancelled",
+    userName: "Jim Beam",
+    companyName: "Example Company",
+    createdAt: "2026-07-02T16:30:00.000Z",
+    read: true,
+  },
+  {
+    id: "4",
+    type: "review_requested",
+    userName: "Jim Beam",
+    companyName: "Example Company",
+    createdAt: "2026-07-02T12:15:00.000Z",
+    read: true,
+  },
+  {
+    id: "5",
+    type: "review_requested",
+    userName: "Peter Pan",
+    companyName: "Example Company 2",
+    createdAt: "2026-07-01T10:45:00.000Z",
+    read: true,
+  },
+  {
+    id: "6",
+    type: "team",
+    userName: "Anna Smith",
+    createdAt: "2026-06-30T09:20:00.000Z",
+    read: false,
+  },
+  {
+    id: "7",
+    type: "review_cancelled",
+    userName: "Robert Fox",
+    companyName: "Example Company 3",
+    createdAt: "2026-06-29T18:10:00.000Z",
+    read: true,
+  },
+  {
+    id: "8",
+    type: "review_requested",
+    userName: "Emily Clark",
+    companyName: "Example Company 4",
+    createdAt: "2026-06-28T11:00:00.000Z",
+    read: false,
+  },
+];
