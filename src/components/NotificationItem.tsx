@@ -71,7 +71,7 @@ const NotificationIcon = ({
   type: Notification["type"];
   shouldReduceMotion: boolean | null;
 }) => {
-  const hoverAnimation = shouldReduceMotion ? undefined : { scale: 1.04 };
+  const hoverAnimation = shouldReduceMotion ? { scale: 1 } : { scale: 1.04 };
 
   if (type === "team") {
     return (

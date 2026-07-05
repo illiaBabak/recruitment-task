@@ -104,7 +104,9 @@ export const NotificationDropdown = ({
               !shouldReduceMotion && unreadCount > 0 ? { y: -1 } : undefined
             }
             whileTap={
-              !shouldReduceMotion && unreadCount > 0 ? { scale: 0.98 } : undefined
+              !shouldReduceMotion && unreadCount > 0
+                ? { scale: 0.98 }
+                : undefined
             }
             transition={{ duration: 0.15, ease: "easeOut" }}
             className="inline-flex cursor-pointer items-center gap-2 rounded px-2 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-50 disabled:cursor-not-allowed disabled:text-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 sm:ml-auto"
@@ -112,7 +114,9 @@ export const NotificationDropdown = ({
             <motion.span
               aria-hidden="true"
               whileHover={
-                !shouldReduceMotion && unreadCount > 0 ? { scale: 1.06 } : undefined
+                !shouldReduceMotion && unreadCount > 0
+                  ? { scale: 1.06 }
+                  : undefined
               }
               transition={{ duration: 0.15, ease: "easeOut" }}
             >
